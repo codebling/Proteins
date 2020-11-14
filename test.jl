@@ -15,13 +15,23 @@ ch_huge = "HHPPHPHPHHPHPHPHHHPPHHHPPPHHHPPHHPHPHHHPPPHPHHHPPPPPHHHHHHHPPHHPHPHHP
 ch_huge2 = "HHPPHPHPHHPHPHPHHHPPHHHPPPHHHPPHHPHPHHHPPPHPHHHPPPPPHHHHHHHPPHHPHPHHPHPHHHHPHPHHHPHPHHPHPHHHPPHPHHHHPPPPHHPHPHPPHPHHPPHHPPPPHHHPPPHPPPHPPPPPPHPPHHPPPPHHHPPPPHHHHHHHHHHHHHHHHHHHHHHHHHHHHHPPPHPPPHPPPHHHHPPPHHHHHHHPPPPPPPPHHPPPHHHPPHHPPHHHHPPPHHPHPPPHPHPHHPHHPPPPPPPHHHPPHPPPHPPHPHHPPPH"
 
 ## Solving:
-@time E, C, stats = folder(ch_huge2; dims = 3, latticetype = :triangle, ρ_1 = 0.7, sample_limit = 50)
+@time E_3dt, C_3dt = folder(ch_huge2; dims = 3, latticetype = :triangle, ρ_1 = 0.7,stats = false, sample_limit = 50)
 
-plot(chainvis(C, ch_huge2, size = 3; linkcolor = :red, linkalpha = 0.9), foreground = :white)
+@time E_3ds, C_3ds = folder(ch_huge2; dims = 3, ρ_1 = 0.7,stats = false, sample_limit = 50)
 
-growth3 = @animate for i = 1:length(C)
-    plot(chainvis(C[1:i], ch_huge2[1:i]; size = 7, linkalpha = 0.3), foreground = :white, size = (800,800))
+@time E_2dt, C_2dt = folder(ch_huge2; latticetype = :triangle, ρ_1 = 0.7,stats = false, sample_limit = 50)
+
+@time E_2ds, C_2ds = folder(ch_huge2; ρ_1 = 0.7,stats = false, sample_limit = 50)
+
+### full visualization
+growth_all = @animate for i = 1:length(C)
+    P1 = plot(chainvis(C_2ds[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.6), foreground = :white)
+    P2 = plot(chainvis(C_2dt[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.6), foreground = :white)
+    P3 = plot(chainvis(C_3ds[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.3), foreground = :white)
+    P4 = plot(chainvis(C_3dt[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.3), foreground = :white)
+
+    plot(P1, P2, P3, P4, layout = (2,2))
 end
 
-gif(growth3, "Figures/growth3.gif", fps = 15)
+gif(growth_all, "Figures/growthall.gif", fps = 15)
 
