@@ -12,10 +12,16 @@ ch_100 = "PPPHHPPHHHHPPHHHPHHPHHPHHHHPPPPPPPPHHHHHHPPHHHHHHPPPPPPPPPHPHHPHHHHHHH
 
 ch_huge = "HHPPHPHPHHPHPHPHHHPPHHHPPPHHHPPHHPHPHHHPPPHPHHHPPPPPHHHHHHHPPHHPHPHHPHPHHHHPHPHHHPHPHHPHPHHHPPHPHHHHPPPPHHPHPHPPHPHHPPHHPPPPHHHPPPHPPPHPPPPPPHHHPPHHPPHHHHPPPHHPHPPPHPHPHHPHHPPPPPPPHHHPPHPPPHPPHPHHPPPH"
 
-
+ch_huge2 = "HHPPHPHPHHPHPHPHHHPPHHHPPPHHHPPHHPHPHHHPPPHPHHHPPPPPHHHHHHHPPHHPHPHHPHPHHHHPHPHHHPHPHHPHPHHHPPHPHHHHPPPPHHPHPHPPHPHHPPHHPPPPHHHPPPHPPPHPPPPPPHPPHHPPPPHHHPPPPHHHHHHHHHHHHHHHHHHHHHHHHHHHHHPPPHPPPHPPPHHHHPPPHHHHHHHPPPPPPPPHHPPPHHHPPHHPPHHHHPPPHHPHPPPHPHPHHPHHPPPPPPPHHHPPHPPPHPPHPHHPPPH"
 
 ## Solving:
-@time E, C, stats = folder(ch_huge; latticetype = :triangle, ρ_1 = 0.7, sample_limit = 150)
+@time E, C, stats = folder(ch_huge2; dims = 3, latticetype = :triangle, ρ_1 = 0.7, sample_limit = 50)
 
+plot(chainvis(C, ch_huge2, size = 3; linkcolor = :red, linkalpha = 0.9), foreground = :white)
 
-plot(chainvis(C, ch_huge, size = 3; linkcolor = :red, linkalpha = 0.9), size = (1000,800))
+growth3 = @animate for i = 1:length(C)
+    plot(chainvis(C[1:i], ch_huge2[1:i]; size = 7, linkalpha = 0.3), xlim = (-7,7), ylim = (-7,7), zlim = (-7,7), foreground = :white, camera = (10 * (1 + cos(i)), 40), size = (800,800))
+end
+
+gif(growth3, "Figures/growth3.gif", fps = 15)
+
