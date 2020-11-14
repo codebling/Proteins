@@ -8,8 +8,23 @@ This is the working implementation of the Branch and Bound HP lattice protein fo
 
 The algorithm proposed by Chen and Huang implements a Branch-and-Bound growing search technique. Each acid in the chain is placed consecutively, and the energy state is compared to the historic average and historic minimum of all potential chain conformations of the same length. Their paper shows a 2D square lattice implementation, and uses a depth-first search technique. A big drawback of the depth-first implementation, is that not all conformations of length *k* are evaluated for their low-energy potential at the same time--the potential for a given partial conformation can not be fully evaluated until all possible branches from this partial conformation is completed. 
 
-This implementation uses a *breadth*-first search technique, which evaluates *layers* of the protein chain: in other words, it tests all possible conformations of length k, evaluates each energy potential, and then begins a search for branches of length k+1 only using high-potential partial chains. This has sped up the implementation significantly. Another implementation is the 2D triangular lattice, as well as 3-Dimensional implementations of the square and triangular lattice shapes. Here are some examples on a 200-acid long chain.
+This implementation uses a *breadth*-first search technique, which evaluates *layers* of the protein chain: in other words, it tests all possible conformations of length k, evaluates each energy potential, and then begins a search for branches of length k+1 only using high-potential partial chains. This has sped up the implementation significantly. Another implementation is the 2D triangular lattice, as well as 3-Dimensional implementations of the square and triangular lattice shapes. Here are some examples on a 200-acid long chain with the sequence: `HHPPHPHPHHPHPHPHHHPPHHHPPPHHHPPHHPHPHHHPPPHPHHHPPPPPHHHHHHHPPHHPHPHHPHPHHHHPHPHHHPHPHHPHPHHHPPHPHHHHPPPPHHPHPHPPHPHHPPHHPPPPHHHPPPHPPPHPPPPPPHHHPPHHPPHHHHPPPHHPHPPPHPHPHHPHHPPPPPPPHHHPPHPPPHPPHPHHPPPH`
 
 ![All possible lattice + dimension types on a 200-acid long chain.](Figures/chain200.png)
 
-Another key implementation is an additional threshold culling routine. 
+Another key implementation is an additional threshold culling routine. Even with the branch-and-bound algorithm, the number of potential candidate locations can be come too large to compute in a reasonable time. A user-adjustable threshold limit (default is 50000) is also set that maintains a reasonable amount of candidates to search from for the subsequent acid k+1. When the number of candidates exceeds this threshold, a random sample from all viable candidates of `n=threshold` is extracted, and then the typical culling probability selection functions are implemented on this selected subset. My tests have shown significant improvement in speed while maintaining near-optimum results (based on benchmark protein chains in the Chen and Huang paper).
+
+# Use:
+## Folding algorithm:
+The main operation is taken by the interface function `folder`. The only required parameter is the sequence of polarities in the desired chain to fold, `folder(polarity)`. `polarity` can either be a string of H and P values (e.g. "HPPHHPPPHPHPP") or a binary array, where `H = 1` and `P = 0` (e.g. [1, 0, 0, 1, 1, 0, 1, 0]). All other parameters are set as optional keywords:
+
+1. `rho_1` (default = 0.8) culling probability threshold for candidates whose energy functions are worse than the global average
+2. `rho_2` (default = 0.5) culling probability threshold for candidates whose energy functions are between the global minimum and average
+3. `dims` (default = 2) number of dimensions for lattice
+4. `latticetype` (default = `:square`) shape of base lattice for folding. The other option is `:triangle`.
+5. `sample_limit` (default = 50e3) the maximum number of candidates to pursue at each iteration
+6. `stats` (default = true) output a DataFrame type of iteration-wise statistics on global energy, the number of candidates, etc.
+
+If `stats=true`, the output is `e_min, c_min, output`, where `e_min` is the minimum energy state found, `c_min` is the array of amino acid positions of the optimal folded chain, and `output` is the DataFrame of statistics. If `stats=false`, the dataframe is omitted.
+
+## Visualization:
