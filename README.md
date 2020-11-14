@@ -18,8 +18,8 @@ Another key implementation is an additional threshold culling routine. Even with
 ## Folding algorithm:
 The main operation is taken by the interface function `folder`. The only required parameter is the sequence of polarities in the desired chain to fold, `folder(polarity)`. `polarity` can either be a string of H and P values (e.g. "HPPHHPPPHPHPP") or a binary array, where `H = 1` and `P = 0` (e.g. [1, 0, 0, 1, 1, 0, 1, 0]). All other parameters are set as optional keywords:
 
-1. `rho_1` (default = 0.8) culling probability threshold for candidates whose energy functions are worse than the global average
-2. `rho_2` (default = 0.5) culling probability threshold for candidates whose energy functions are between the global minimum and average
+1. `ρ_1` (default = 0.8) culling probability threshold for candidates whose energy functions are worse than the global average
+2. `ρ_2` (default = 0.5) culling probability threshold for candidates whose energy functions are between the global minimum and average
 3. `dims` (default = 2) number of dimensions for lattice
 4. `latticetype` (default = `:square`) shape of base lattice for folding. The other option is `:triangle`.
 5. `sample_limit` (default = 50e3) the maximum number of candidates to pursue at each iteration
@@ -28,3 +28,18 @@ The main operation is taken by the interface function `folder`. The only require
 If `stats=true`, the output is `e_min, c_min, output`, where `e_min` is the minimum energy state found, `c_min` is the array of amino acid positions of the optimal folded chain, and `output` is the DataFrame of statistics. If `stats=false`, the dataframe is omitted.
 
 ## Visualization:
+The chain can be visualized by `chainvis(chain, polarity)`. `chain` is the position-vector of the solved chain (or any arbitrary chain of length = length(polarity)), and `polarity` is the polarity sequence of the chain. Optional arguments are:
+
+1. `title` (default = true) gives the length of the chain
+2. `size` (default = 6) size of the H, P node representation
+3. `link` (default = true) visualize the H-H links that sum to the energy value of the conformation
+   1. `linkcolor` (default = :black) color of link lines
+   2. `linkalpha` (default = 0.5) alpha value of the link lines
+
+The plotting uses the `Plots` package from Julia. Any backend can be used; the `plotlyjs()` back end is especially nice to manipulate in 3D:
+
+![triangularvisualization](Figures/triangle.png)
+
+The statistics of the overall optimization can be visualized using `statsvis(stats)`:
+
+![statistics](Figures/stats.png)

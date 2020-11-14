@@ -141,7 +141,7 @@ function chainvis(chain,
     size = 6, 
     link = true,
     linkcolor = :black,
-    linkalpha = :0.5)
+    linkalpha = 0.5)
 
     if typeof(polarity) == String
         polarity = HP_converter(polarity)
@@ -517,7 +517,7 @@ function folder(polarity;
     c_min = conformations[idx_min] #corresponding conformation
 
     # formplot = chainvis(c_min, polarity) # visualize chain
-    
+
     k_store = 3:length(polarity)-1 # Storage vector
 
     # create data frame for iteration-wise information

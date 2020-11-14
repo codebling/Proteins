@@ -15,7 +15,7 @@ ch_huge = "HHPPHPHPHHPHPHPHHHPPHHHPPPHHHPPHHPHPHHHPPPHPHHHPPPPPHHHHHHHPPHHPHPHHP
 
 
 ## Solving:
-pgfplotsx()
 @time E, C, stats = folder(ch_huge; latticetype = :triangle, ρ_1 = 0.7, sample_limit = 150)
 
-plot(chainvis(C, ch_huge, size = 3; linkalpha = 0.2), size = (1000,800))
+
+plot(chainvis(C, ch_huge, size = 3; linkcolor = :red, linkalpha = 0.9), size = (1000,800))
