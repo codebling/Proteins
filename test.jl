@@ -20,7 +20,7 @@ ch_huge2 = "HHPPHPHPHHPHPHPHHHPPHHHPPPHHHPPHHPHPHHHPPPHPHHHPPPPPHHHHHHHPPHHPHPHH
 plot(chainvis(C, ch_huge2, size = 3; linkcolor = :red, linkalpha = 0.9), foreground = :white)
 
 growth3 = @animate for i = 1:length(C)
-    plot(chainvis(C[1:i], ch_huge2[1:i]; size = 7, linkalpha = 0.3), xlim = (-7,7), ylim = (-7,7), zlim = (-7,7), foreground = :white, camera = (10 * (1 + cos(i)), 40), size = (800,800))
+    plot(chainvis(C[1:i], ch_huge2[1:i]; size = 7, linkalpha = 0.3), foreground = :white, size = (800,800))
 end
 
 gif(growth3, "Figures/growth3.gif", fps = 15)
