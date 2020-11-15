@@ -33,5 +33,8 @@ growth_all = @animate for i = 1:length(C)
     plot(P1, P2, P3, P4, layout = (2,2))
 end
 
-gif(growth_all, "Figures/growthall.gif", fps = 15)
+plotlyjs()
+P = plot(chainvis(C_3dt, ch_huge2; size = 5, linkalpha = 0.3), foreground = :white)
+
+gif(growth_all, "Figures/growthallfast.gif", fps = 30)
 
