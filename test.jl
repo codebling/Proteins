@@ -15,12 +15,17 @@ ch_huge = "HHPPHPHPHHPHPHPHHHPPHHHPPPHHHPPHHPHPHHHPPPHPHHHPPPPPHHHHHHHPPHHPHPHHP
 ch_huge2 = "HHPPHPHPHHPHPHPHHHPPHHHPPPHHHPPHHPHPHHHPPPHPHHHPPPPPHHHHHHHPPHHPHPHHPHPHHHHPHPHHHPHPHHPHPHHHPPHPHHHHPPPPHHPHPHPPHPHHPPHHPPPPHHHPPPHPPPHPPPPPPHPPHHPPPPHHHPPPPHHHHHHHHHHHHHHHHHHHHHHHHHHHHHPPPHPPPHPPPHHHHPPPHHHHHHHPPPPPPPPHHPPPHHHPPHHPPHHHHPPPHHPHPPPHPHPHHPHHPPPPPPPHHHPPHPPPHPPHPHHPPPH"
 
 ## Solving:
+
+# 3D Triangular
 @time E_3dt, C_3dt = folder(ch_huge2; dims = 3, latticetype = :triangle, ρ_1 = 0.7,stats = false, sample_limit = 50)
 
+# 3D Square
 @time E_3ds, C_3ds = folder(ch_huge2; dims = 3, ρ_1 = 0.7,stats = false, sample_limit = 50)
 
+# 2D Triangular
 @time E_2dt, C_2dt = folder(ch_huge2; latticetype = :triangle, ρ_1 = 0.7,stats = false, sample_limit = 50)
 
+# 2D Square
 @time E_2ds, C_2ds = folder(ch_huge2; ρ_1 = 0.7,stats = false, sample_limit = 50)
 
 ### full visualization
@@ -33,8 +38,32 @@ growth_all = @animate for i = 1:length(C)
     plot(P1, P2, P3, P4, layout = (2,2))
 end
 
-plotlyjs()
-P = plot(chainvis(C_3dt, ch_huge2; size = 5, linkalpha = 0.3), foreground = :white)
+pyplot()
 
-gif(growth_all, "Figures/growthallfast.gif", fps = 30)
+chain = C_3dt
+polarity = HP_converter(ch_huge2)
+
+h = findall(polarity .== 1)
+p = findall(polarity .!= 1)
+
+x = [p[1] for p in chain]
+xh = x[h]
+xp = x[p]
+
+y = [p[2] for p in chain]
+yh = y[h]
+yp = y[p]
+
+z = [p[3] for p in chain]
+zh = z[h]
+zp = z[p]
+
+form = plot(x, y, z, color = :black, legend = false, foreground = :white)
+scatter!(xh, yh, zh, color = :black)
+
+formtest = @animate for i = 1:length(chain)
+    plot(x[1:i], y[1:i], z[1:i], camera = (i,30), color = :black, legend = false, foreground = :white)
+end
+
+gif(formtest, "Figures/formtest.gif", fps = 20)
 
