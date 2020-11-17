@@ -32,14 +32,14 @@ chainvis(C_2dt, polarity)
 @time E_2ds, C_2ds = folder(ch_huge2; ρ_1 = 0.7,stats = false, sample_limit = 500)
 chainvis(C_2ds, polarity)
 
-### full animation
-# growth_all = @animate for i = 1:length(ch_huge2)
-#     P1 = plot(chainvis(C_2ds[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.6), foreground = :white)
-#     P2 = plot(chainvis(C_2dt[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.6), foreground = :white)
-#     P3 = plot(chainvis(C_3ds[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.3), camera = (i, 30), foreground = :white)
-#     P4 = plot(chainvis(C_3dt[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.3), camera = (i,30), foreground = :white)
+## full animation
+growth_all = @animate for i = 1:length(ch_huge2)
+    P1 = plot(chainvis(C_2ds[1:i], ch_huge2[1:i]; size = 3, linkalpha = 0.6), foreground = :white)
+    P2 = plot(chainvis(C_2dt[1:i], ch_huge2[1:i]; size = 3, linkalpha = 0.6), foreground = :white)
+    P3 = plot(chainvis(C_3ds[1:i], ch_huge2[1:i]; size = 3, linkalpha = 0.3), camera = (i, 30), foreground = :white)
+    P4 = plot(chainvis(C_3dt[1:i], ch_huge2[1:i]; size = 3, linkalpha = 0.3), camera = (i,30), foreground = :white)
 
-#     plot(P1, P2, P3, P4, layout = (2,2))
-# end
+    plot(P1, P2, P3, P4, layout = (2,2))
+end
 
-# gif(growth_all, "Figures/growth_pyplot.gif", fps = 20)
+gif(growth_all, "Figures/growth_pyplot.gif", fps = 20)

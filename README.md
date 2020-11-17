@@ -1,7 +1,7 @@
 # Proteins
 more like broteins
 
-![growth](Figures/growthall.gif)
+![growth](Figures/growth_pyplot.gif)
 
 This is the working implementation of the Branch and Bound HP lattice protein folding algorithm developed by [Chen and Huang](https://www.brown.edu/Research/Istrail_Lab/_proFolding/papers/2005/bran-06.pdf). The general gist of all HP protein folding algorithms is:
 1. Given a linear sequence of amino acids, first convert each acid to either a Hydrophobic (H) or Hydrophilic (P) type acid. Since these proteins are in aqueous solutions, the protein chain will want to fold such that the H acids are as far away from the exterior environment as possible (ie the H acids will tend to clump towards the center of the folded protein).
