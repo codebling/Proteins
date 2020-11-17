@@ -137,6 +137,7 @@ end
 # Visualize a chain+polarity combination
 function chainvis(chain, 
     polarity; 
+    mpl = false,
     title = true, 
     size = 6, 
     link = true,
@@ -167,7 +168,8 @@ function chainvis(chain,
         yh = y[h]
         yp = y[p]
 
-        form = plot(x, y, color = :black, legend = false, framestyle = :none, aspect_ratio = 1, title = tit)
+        form = plot(x, y, color = :black, legend = false, framestyle = :none,
+        aspect_ratio = 1, title = tit)
 
         if link == true
             linkvis(form, chain, polarity; linkcolor = linkcolor, linkalpha = linkalpha)
@@ -190,7 +192,8 @@ function chainvis(chain,
         zh = z[h]
         zp = z[p]
 
-        form = plot(x, y, z, color = :black, legend = false, framestyle = :none, aspect_ratio = 1, title = tit)
+        form = plot(x, y, z, color = :black, legend = false, framestyle = :none,  
+            title = tit)
 
         if link == true
             linkvis(form, chain, polarity; linkcolor = linkcolor, linkalpha = linkalpha)

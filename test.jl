@@ -16,54 +16,30 @@ ch_huge2 = "HHPPHPHPHHPHPHPHHHPPHHHPPPHHHPPHHPHPHHHPPPHPHHHPPPPPHHHHHHHPPHHPHPHH
 
 ## Solving:
 
+polarity = HP_converter(ch_huge2)
 # 3D Triangular
 @time E_3dt, C_3dt = folder(ch_huge2; dims = 3, latticetype = :triangle, ρ_1 = 0.7,stats = false, sample_limit = 50)
+chainvis(C_3dt, polarity)
 
 # 3D Square
 @time E_3ds, C_3ds = folder(ch_huge2; dims = 3, ρ_1 = 0.7,stats = false, sample_limit = 50)
 
 # 2D Triangular
 @time E_2dt, C_2dt = folder(ch_huge2; latticetype = :triangle, ρ_1 = 0.7,stats = false, sample_limit = 50)
+chainvis(C_2dt, polarity)
 
 # 2D Square
-@time E_2ds, C_2ds = folder(ch_huge2; ρ_1 = 0.7,stats = false, sample_limit = 50)
+@time E_2ds, C_2ds = folder(ch_huge2; ρ_1 = 0.7,stats = false, sample_limit = 500)
+chainvis(C_2ds, polarity)
 
-### full visualization
-growth_all = @animate for i = 1:length(C)
-    P1 = plot(chainvis(C_2ds[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.6), foreground = :white)
-    P2 = plot(chainvis(C_2dt[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.6), foreground = :white)
-    P3 = plot(chainvis(C_3ds[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.3), foreground = :white)
-    P4 = plot(chainvis(C_3dt[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.3), foreground = :white)
+### full animation
+# growth_all = @animate for i = 1:length(ch_huge2)
+#     P1 = plot(chainvis(C_2ds[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.6), foreground = :white)
+#     P2 = plot(chainvis(C_2dt[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.6), foreground = :white)
+#     P3 = plot(chainvis(C_3ds[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.3), camera = (i, 30), foreground = :white)
+#     P4 = plot(chainvis(C_3dt[1:i], ch_huge2[1:i]; size = 5, linkalpha = 0.3), camera = (i,30), foreground = :white)
 
-    plot(P1, P2, P3, P4, layout = (2,2))
-end
+#     plot(P1, P2, P3, P4, layout = (2,2))
+# end
 
-pyplot()
-
-chain = C_3dt
-polarity = HP_converter(ch_huge2)
-
-h = findall(polarity .== 1)
-p = findall(polarity .!= 1)
-
-x = [p[1] for p in chain]
-xh = x[h]
-xp = x[p]
-
-y = [p[2] for p in chain]
-yh = y[h]
-yp = y[p]
-
-z = [p[3] for p in chain]
-zh = z[h]
-zp = z[p]
-
-form = plot(x, y, z, color = :black, legend = false, foreground = :white)
-scatter!(xh, yh, zh, color = :black)
-
-formtest = @animate for i = 1:length(chain)
-    plot(x[1:i], y[1:i], z[1:i], camera = (i,30), color = :black, legend = false, foreground = :white)
-end
-
-gif(formtest, "Figures/formtest.gif", fps = 20)
-
+# gif(growth_all, "Figures/growth_pyplot.gif", fps = 20)
