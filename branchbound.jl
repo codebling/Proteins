@@ -138,7 +138,7 @@ end
 function chainvis(chain, 
     polarity; 
     mpl = false,
-    title = true, 
+    title = false, 
     size = 6, 
     link = true,
     linkcolor = :black,

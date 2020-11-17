@@ -520,6 +520,22 @@ function element_plotter(nodes, element_idx, A; cull_limit = 1, show_nodes = tru
     
     widths = transpose(A[idx] ./ maximum(A[idx])) * lwscale
 
+    if length(elems[1][1]) == 3
+        z = [[elems[i][1][3], elems[i][2][3]] for i = 1:length(elems)]
+        nz = [[node[3]] for node in nodes]
+
+        fig = plot3d(x[idx], y[idx], z[idx], 
+            lw = widths,
+            color = :black, 
+            framestyle = :none, 
+            legend = false, 
+            alpha = 0.7)
+        if show_nodes
+            scatter3d!(nx, ny, nz, color = :black)
+        end
+        return fig
+    end
+
     fig = plot(x[idx], y[idx], 
     lw = widths,
     color = :black, 

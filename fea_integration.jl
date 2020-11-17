@@ -2,10 +2,10 @@ include("branchbound.jl")
 include("fea.jl")
 include("interface.jl")
 
-ch_25 = "PPHPPHHPPPPHHPPPPHHPPPPHH"
-polarity = HP_converter(ch_25)
+chain = "HHHHPPPPHHHHHHHHHHHHPPPPPPHHHHHHHHHHHHPPPHHHHHHHHHHHHPPPHHHHHHHHHHHHPPPHPPHHPPHHPPHP"
+polarity = HP_converter(chain)
 
-@time E, C = folder(ch_25; latticetype = :triangle, ρ_1 = 0.7,stats = false, sample_limit = 50)
+@time E, C = folder(chain, latticetype = :triangle, ρ_1 = 0.7,stats = false, sample_limit = 50)
  
 n, eidx, dofs = chain2element(C, polarity)
 
@@ -14,21 +14,12 @@ loads = load_nodes(C; load = [0, -1000])
 A = 100 * ones(length(eidx))
 E = 200e3 * ones(length(eidx))
 
+###### Visualizing
+solved = plot(chainvis(C, polarity; link = false), title = "Solved Chain")
+linked = plot(chainvis(C, polarity; link = true), title = "H-H Links")
+elements = plot(element_plotter(n, eidx, A; lwscale = 2), title = "Truss Conversion")
+
 ###### Solving
-element_plotter(n, eidx, A)
 
-elements = element_maker(n, eidx)
-n_elements = length(elements)
-lengths = [elem_length(e) for e in elements]
+# First step is to ensure general structural stability, IE add links until det(K) != 0
 
-T = [Γ(θ(e)) for e in elements]
-    
-n_dof = length(dofs)
-
-k_global = stiffness_init(n, elements, lengths, T, A, E)
-
-idx_expanded = e_dof_expanded.(eidx)
-
-K = build_K(idx_expanded, k_global, n_elements)
-
-F = loadmaker(loads, n, n, n_dof)
