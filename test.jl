@@ -1,5 +1,4 @@
-include("branchbound.jl")
-
+using Proteins
 
 ## Chen and Huang Benchmark Proteins
 ch_24 = "HHPPHPPHPPHPPHPPHPPHPPHH"

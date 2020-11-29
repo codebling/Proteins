@@ -1,4 +1,5 @@
-include("branchbound.jl")
+using Proteins
+
 include("fea.jl")
 include("interface.jl")
 
